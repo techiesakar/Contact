@@ -69,9 +69,6 @@ export const routeAnnotations = {
         name: "id",
         required: true,
         description: "ID of the people",
-        schema: {
-          $ref: "#/components/schemas/PeopleDto",
-        },
       },
     ],
     responses: {
