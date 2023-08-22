@@ -27,7 +27,7 @@ export const routeTags = {
   },
 };
 
-export const routeAnnotations = {
+export const candidateRouteAnnotations = {
   // To get all People
   getPeople: {
     tags: [routeTags.PeopleRoutes.name],
@@ -120,6 +120,9 @@ export const routeAnnotations = {
         name: "id",
         required: true,
         description: "Delete people by ID",
+        schema: {
+          type: "string",
+        },
       },
     ],
     responses: {

@@ -5,8 +5,8 @@ import {
   CreateDateColumn,
 } from "typeorm";
 @Entity()
-export class People {
-  @PrimaryGeneratedColumn("uuid")
+export class Company {
+  @PrimaryGeneratedColumn()
   id: string;
 
   @Column()
@@ -18,9 +18,15 @@ export class People {
   @Column()
   phone: string;
 
-  @CreateDateColumn()
-  created_at: Date;
+  @Column()
+  profile_image: string;
 
   @Column()
-  image: string;
+  document_one: string;
+
+  @Column()
+  document_two: string;
+
+  @CreateDateColumn()
+  created_at: Date;
 }

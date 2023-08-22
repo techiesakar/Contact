@@ -1,4 +1,4 @@
-import { port } from "./config";
+import config from "./config";
 import * as express from "express";
 import * as bodyParser from "body-parser";
 import * as cors from "cors";
@@ -7,8 +7,10 @@ import * as swaggerUiExpress from "swagger-ui-express";
 import { Request, Response, NextFunction } from "express";
 import { AppDataSource } from "./data-source";
 import AppError from "./utils/App.Error";
-import PeopleRoute from "./routes/people.routes";
+
 import { apiDocumentation } from "./swagger/swaggerConfig";
+import PeopleRoute from "./routes/people.routes";
+import DistrictRoute from "./routes/district.routes";
 
 AppDataSource.initialize()
   .then(async () => {
@@ -36,6 +38,7 @@ AppDataSource.initialize()
       });
     });
     app.use("/people", PeopleRoute);
+    app.use("/district", DistrictRoute);
 
     // unhandled Routes
     app.all("*", (req: Request, res: Response, next: NextFunction) => {
@@ -56,6 +59,8 @@ AppDataSource.initialize()
     );
 
     // start express server
-    app.listen(port, () => console.log(`Server is running on port : ${port}`));
+    app.listen(config.port, () =>
+      console.log(`Server is running on port : ${config.port}`)
+    );
   })
   .catch((error) => console.log(error));

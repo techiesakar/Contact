@@ -26,11 +26,11 @@
   },
   "scripts": {
     "build": "tsc",
-    "start": "ts-node src/index.ts",
+    "start": "ts-node index.ts",
     "typeorm": "typeorm-ts-node-commonjs",
-    "dev": "nodemon -w *.ts src/index.ts",
-    "create": "typeorm migration:create ./src/migration/migrate",
-    "generate": "npx typeorm-ts-node-commonjs migration:generate ./src/migration/migrate -d src/data-source",
-    "migrate": "npx typeorm-ts-node-commonjs migration:run -d src/data-source"
+    "dev": "nodemon -w *.ts index.ts",
+    "create": "typeorm migration:create ./migration/migrate",
+    "generate": "npx typeorm-ts-node-commonjs migration:generate ./migration/migrate -d data-source",
+    "migrate": "npx typeorm-ts-node-commonjs migration:run -d data-source"
   }
 }

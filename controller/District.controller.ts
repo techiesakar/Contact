@@ -1,22 +1,17 @@
 import AppError from "../utils/App.Error";
 import { AppDataSource } from "../data-source";
 import { NextFunction, Request, Response } from "express";
-import { People } from "../entity/People";
+import { District } from "../entity/District";
 
-// Table Connection
-const PeopleRepo = AppDataSource.getRepository(People);
+const DistrictRepo = AppDataSource.getRepository(District);
 
 export const postHandler = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
-  console.log(req.file, "This is image");
   try {
-    if (req.file) {
-      req.body.image = req.file.filename;
-    }
-    await PeopleRepo.save(req.body)
+    await DistrictRepo.save(req.body)
       .then((result: object) => {
         res.status(200).json({
           status: "success",
@@ -37,7 +32,7 @@ export const getAllHandler = async (
   next: NextFunction
 ) => {
   try {
-    await PeopleRepo.find()
+    await DistrictRepo.find()
       .then((result: any) => {
         res.status(200).json({
           status: "success",
@@ -45,7 +40,7 @@ export const getAllHandler = async (
         });
       })
       .catch((error) => {
-        next(new AppError(error.statusCode, error.message));
+        next(new AppError(error.statuscode, error.message));
       });
   } catch (error) {
     next(new AppError(error.statusCode, error.message));
@@ -58,7 +53,7 @@ export const getSingleHandler = async (
   next: NextFunction
 ) => {
   try {
-    await PeopleRepo.findOneBy({ id: req.params.id })
+    await DistrictRepo.findOneBy({ id: parseInt(req.params.id) })
       .then((result: any) => {
         res.status(200).json({
           status: "success",
@@ -73,45 +68,41 @@ export const getSingleHandler = async (
   }
 };
 
-export const deleteHandler = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
-  try {
-    const people = await PeopleRepo.findOneBy({ id: req.params.id });
-    if (!people) {
-      next(new AppError(404, "ID is invalid"));
-    } else {
-      await PeopleRepo.delete({ id: req.params.id })
-        .then((result: any) => {
-          res.status(200).json({
-            status: "success",
-            data: result,
-          });
-        })
-        .catch((error) => {
-          next(new AppError(error.statusCode, error.message));
-        });
-    }
-  } catch (error) {
-    next(new AppError(error.statusCode, error.message));
-  }
-};
-
 export const patchHandler = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
   try {
-    console.log(req.body);
-    const people = await PeopleRepo.findOneBy({ id: req.params.id });
-    if (!people) {
-      next(new AppError(404, "ID is invalid"));
+    let District = await DistrictRepo.findOneBy({
+      id: parseInt(req.params.id),
+    });
+    if (!District) {
+      return next(new AppError(404, "District not found"));
     }
-    Object.assign(people, req.body);
-    await PeopleRepo.save(people)
+    Object.assign(District, req.body);
+    await DistrictRepo.save(District)
+      .then((result: object) => {
+        res.status(200).json({
+          message: "District has been updated",
+          result,
+        });
+      })
+      .catch((error: any) => {
+        next(new AppError(error.statusCode, error.message));
+      });
+  } catch (error: any) {
+    next(new AppError(error.statusCode, error.message));
+  }
+};
+
+export const deleteHandler = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    await DistrictRepo.delete({ id: parseInt(req.params.id) })
       .then((result: any) => {
         res.status(200).json({
           status: "success",
